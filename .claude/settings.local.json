@@ -10,7 +10,9 @@
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: BIM 3D Viewer with IFC file support\n\n- Implemented IFC file loader with memory optimization\n- Added individual IFC object selection functionality\n- Created advanced viewer with 10+ professional features:\n  * Object Explorer with filtering and search\n  * Viewpoint management (save/load camera positions)\n  * Screenshot tool\n  * 3D Annotation system\n  * Area and volume calculation\n  * Collision detection\n  * Measurement tools\n  * Section/slice tools\n  * Enhanced UI with 3-panel layout\n- Optimized for large IFC files with progress tracking\n- Added comprehensive documentation and troubleshooting guides\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git branch:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run build)"
     ],
     "deny": [],
     "ask": []

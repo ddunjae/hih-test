@@ -22,6 +22,18 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
@@ -42,8 +54,9 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "/" # Built app content directory - optional
+          output_location: "dist" # Built app content directory - Vite builds to dist folder
           github_id_token: ${{ steps.idtoken.outputs.result }}
+          skip_app_build: true # We already built the app in previous step
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
