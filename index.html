@@ -3,204 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIM 3D Viewer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            background: #1a1a1a;
-        }
-
-        #container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #toolbar {
-            background: #2d2d2d;
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 100;
-        }
-
-        .toolbar-button {
-            background: #404040;
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-
-        .toolbar-button:hover {
-            background: #505050;
-        }
-
-        .toolbar-button.active {
-            background: #0066cc;
-        }
-
-        #main-content {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        #sidebar {
-            width: 300px;
-            background: #2d2d2d;
-            color: white;
-            padding: 20px;
-            overflow-y: auto;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-        }
-
-        #sidebar h3 {
-            margin-bottom: 15px;
-            font-size: 16px;
-            border-bottom: 2px solid #404040;
-            padding-bottom: 8px;
-        }
-
-        .property-item {
-            margin-bottom: 10px;
-            padding: 8px;
-            background: #383838;
-            border-radius: 4px;
-        }
-
-        .property-label {
-            font-size: 12px;
-            color: #999;
-            margin-bottom: 4px;
-        }
-
-        .property-value {
-            font-size: 14px;
-            color: #fff;
-        }
-
-        #viewer-container {
-            flex: 1;
-            position: relative;
-        }
-
-        #canvas-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 18px;
-            display: none;
-        }
-
-        #file-input {
-            display: none;
-        }
-
-        .control-panel {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            background: rgba(45, 45, 45, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            color: white;
-            z-index: 10;
-        }
-
-        .control-panel label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 12px;
-            color: #999;
-        }
-
-        .control-panel input[type="range"] {
-            width: 200px;
-        }
-
-        #info-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(45, 45, 45, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            color: white;
-            min-width: 200px;
-            display: none;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 12px;
-        }
-
-        .info-label {
-            color: #999;
-        }
-
-        .info-value {
-            color: #fff;
-            font-weight: bold;
-        }
-    </style>
+    <title>BIM 3D Viewer - Advanced</title>
+    <link rel="stylesheet" href="/src/styles/advanced.css">
 </head>
 <body>
     <div id="container">
+        <!-- Top Toolbar -->
         <div id="toolbar">
-            <h2 style="margin: 0; font-size: 18px;">인혜프로그램</h2>
+            <h2 style="margin: 0; font-size: 18px;">인혜 3D Proram</h2>
             <button class="toolbar-button" id="load-file-btn">IFC 파일 열기</button>
-            <button class="toolbar-button" id="measure-btn">측정</button>
-            <button class="toolbar-button" id="section-btn">단면</button>
-            <button class="toolbar-button" id="reset-camera-btn">카메라 리셋</button>
-            <button class="toolbar-button" id="wireframe-btn">와이어프레임</button>
+
+            <div class="toolbar-separator"></div>
+
+            <button class="toolbar-button" id="measure-btn" title="거리 측정">측정</button>
+            <button class="toolbar-button" id="area-volume-btn" title="면적/부피 계산">면적/부피</button>
+            <button class="toolbar-button" id="section-btn" title="단면 뷰">단면</button>
+            <button class="toolbar-button" id="annotation-btn" title="주석 추가">주석</button>
+
+            <div class="toolbar-separator"></div>
+
+            <button class="toolbar-button" id="viewpoint-btn" title="뷰포인트 저장">뷰포인트</button>
+            <button class="toolbar-button" id="screenshot-btn" title="스크린샷">스크린샷</button>
+            <button class="toolbar-button" id="collision-btn" title="충돌 감지">충돌 감지</button>
+
+            <div class="toolbar-separator"></div>
+
+            <button class="toolbar-button" id="explorer-btn" title="객체 탐색기">탐색기</button>
+            <button class="toolbar-button" id="wireframe-btn" title="와이어프레임">와이어프레임</button>
+            <button class="toolbar-button" id="reset-camera-btn" title="카메라 리셋">리셋</button>
+
+            <div class="toolbar-separator"></div>
+
+            <button class="toolbar-button" id="color-by-category-btn" title="카테고리별 색상">색상</button>
+
+            <div class="toolbar-separator"></div>
+
+            <!-- 새로운 고급 기능 버튼들 -->
+            <button class="toolbar-button" id="model-manager-btn" title="다중 모델 관리">📁 모델</button>
+            <button class="toolbar-button" id="camera-path-btn" title="카메라 경로 애니메이션">🎬 경로</button>
+            <button class="toolbar-button" id="minimap-btn" title="미니맵 표시">🗺️ 미니맵</button>
+            <button class="toolbar-button" id="pdf-report-btn" title="PDF 리포트 생성">📄 리포트</button>
         </div>
 
         <div id="main-content">
-            <div id="sidebar">
-                <h3>객체 정보</h3>
-                <div id="properties-container">
-                    <p style="color: #666; font-size: 14px;">객체를 선택하면 정보가 표시됩니다</p>
+            <!-- Left Sidebar - Object Explorer -->
+            <div id="sidebar-left" class="sidebar">
+                <div class="sidebar-header">
+                    <h3>객체 탐색기</h3>
+                    <button class="toggle-sidebar" id="toggle-left">◀</button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-section">
+                    <input type="text" id="object-search" placeholder="객체 검색..." />
+                    <span id="object-count-display">0 objects</span>
+                </div>
+
+                <!-- Categories -->
+                <div class="section">
+                    <h4>카테고리</h4>
+                    <div class="category-controls">
+                        <button class="small-btn" id="show-all-categories">모두 표시</button>
+                        <button class="small-btn" id="hide-all-categories">모두 숨김</button>
+                    </div>
+                    <div id="categories-list" class="list-container"></div>
+                </div>
+
+                <!-- Objects List -->
+                <div class="section">
+                    <h4>객체 목록</h4>
+                    <div id="objects-list" class="list-container"></div>
                 </div>
             </div>
 
+            <!-- Center - Viewer -->
             <div id="viewer-container">
                 <div id="canvas-container"></div>
                 <div id="loading">로딩 중...</div>
 
+                <!-- Section Control Panel -->
                 <div class="control-panel" id="section-control" style="display: none;">
-                    <label>단면 위치 (X축)</label>
+                    <h4>단면 컨트롤</h4>
+                    <label>X축 <span id="section-x-value">0</span></label>
                     <input type="range" id="section-x" min="-50" max="50" value="0" step="0.1">
-                    <label>단면 위치 (Y축)</label>
+                    <label>Y축 <span id="section-y-value">0</span></label>
                     <input type="range" id="section-y" min="-50" max="50" value="0" step="0.1">
-                    <label>단면 위치 (Z축)</label>
+                    <label>Z축 <span id="section-z-value">0</span></label>
                     <input type="range" id="section-z" min="-50" max="50" value="0" step="0.1">
                 </div>
 
+                <!-- Info Panel -->
                 <div id="info-panel">
                     <div class="info-row">
                         <span class="info-label">삼각형:</span>
@@ -216,11 +108,77 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Right Sidebar - Properties & Tools -->
+            <div id="sidebar-right" class="sidebar">
+                <div class="sidebar-header">
+                    <h3>속성 및 도구</h3>
+                    <button class="toggle-sidebar" id="toggle-right">▶</button>
+                </div>
+
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="properties">속성</button>
+                    <button class="tab-btn" data-tab="viewpoints">뷰포인트</button>
+                    <button class="tab-btn" data-tab="annotations">주석</button>
+                </div>
+
+                <!-- Properties Tab -->
+                <div class="tab-content active" id="tab-properties">
+                    <h4>객체 정보</h4>
+                    <div id="properties-container">
+                        <p style="color: #666; font-size: 14px;">객체를 선택하면 정보가 표시됩니다</p>
+                    </div>
+
+                    <div id="object-explorer">
+                        <h4 style="margin-top: 20px;">IFC 속성</h4>
+                        <div id="ifc-properties-container">
+                            <p style="color: #666; font-size: 14px;">IFC 객체 선택 시 상세 속성 표시</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Viewpoints Tab -->
+                <div class="tab-content" id="tab-viewpoints">
+                    <div class="section-controls">
+                        <button class="toolbar-button" id="save-viewpoint-btn">+ 현재 뷰 저장</button>
+                        <button class="toolbar-button" id="export-viewpoints-btn">내보내기</button>
+                    </div>
+                    <div id="viewpoints-list" class="list-container"></div>
+                </div>
+
+                <!-- Annotations Tab -->
+                <div class="tab-content" id="tab-annotations">
+                    <div class="section-controls">
+                        <button class="toolbar-button" id="clear-annotations-btn">모두 삭제</button>
+                        <button class="toolbar-button" id="export-annotations-btn">내보내기</button>
+                    </div>
+                    <div id="annotations-list" class="list-container"></div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Hidden file inputs -->
     <input type="file" id="file-input" accept=".ifc" />
+    <input type="file" id="viewpoint-import-input" accept=".json" />
+    <input type="file" id="annotation-import-input" accept=".json" />
 
-    <script type="module" src="/src/main.js"></script>
+    <!-- Keyboard Shortcuts Help -->
+    <div id="shortcuts-help" style="display: none;">
+        <h3>키보드 단축키</h3>
+        <ul>
+            <li><kbd>W/S/A/D</kbd> - 카메라 이동</li>
+            <li><kbd>Q/E</kbd> - 위/아래 이동</li>
+            <li><kbd>R</kbd> - 카메라 리셋</li>
+            <li><kbd>ESC</kbd> - 선택 해제 / 도구 종료</li>
+            <li><kbd>F</kbd> - 선택 객체 포커스</li>
+            <li><kbd>H</kbd> - 선택 객체 숨김</li>
+            <li><kbd>Ctrl+S</kbd> - 스크린샷</li>
+            <li><kbd>Ctrl+V</kbd> - 뷰포인트 저장</li>
+        </ul>
+    </div>
+
+    <script type="module" src="/src/main-advanced.js"></script>
 </body>
 </html>
