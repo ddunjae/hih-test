@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIM 3D Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #toolbar {
+            background: #2d2d2d;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+
+        .toolbar-button {
+            background: #404040;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .toolbar-button:hover {
+            background: #505050;
+        }
+
+        .toolbar-button.active {
+            background: #0066cc;
+        }
+
+        #main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #sidebar {
+            width: 300px;
+            background: #2d2d2d;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+        }
+
+        #sidebar h3 {
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-bottom: 2px solid #404040;
+            padding-bottom: 8px;
+        }
+
+        .property-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #383838;
+            border-radius: 4px;
+        }
+
+        .property-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .property-value {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        #viewer-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            display: none;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .control-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(45, 45, 45, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            z-index: 10;
+        }
+
+        .control-panel label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .control-panel input[type="range"] {
+            width: 200px;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(45, 45, 45, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            min-width: 200px;
+            display: none;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .info-label {
+            color: #999;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="toolbar">
+            <h2 style="margin: 0; font-size: 18px;">인혜프로그램</h2>
+            <button class="toolbar-button" id="load-file-btn">IFC 파일 열기</button>
+            <button class="toolbar-button" id="measure-btn">측정</button>
+            <button class="toolbar-button" id="section-btn">단면</button>
+            <button class="toolbar-button" id="reset-camera-btn">카메라 리셋</button>
+            <button class="toolbar-button" id="wireframe-btn">와이어프레임</button>
+        </div>
+
+        <div id="main-content">
+            <div id="sidebar">
+                <h3>객체 정보</h3>
+                <div id="properties-container">
+                    <p style="color: #666; font-size: 14px;">객체를 선택하면 정보가 표시됩니다</p>
+                </div>
+            </div>
+
+            <div id="viewer-container">
+                <div id="canvas-container"></div>
+                <div id="loading">로딩 중...</div>
+
+                <div class="control-panel" id="section-control" style="display: none;">
+                    <label>단면 위치 (X축)</label>
+                    <input type="range" id="section-x" min="-50" max="50" value="0" step="0.1">
+                    <label>단면 위치 (Y축)</label>
+                    <input type="range" id="section-y" min="-50" max="50" value="0" step="0.1">
+                    <label>단면 위치 (Z축)</label>
+                    <input type="range" id="section-z" min="-50" max="50" value="0" step="0.1">
+                </div>
+
+                <div id="info-panel">
+                    <div class="info-row">
+                        <span class="info-label">삼각형:</span>
+                        <span class="info-value" id="triangle-count">0</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">객체:</span>
+                        <span class="info-value" id="object-count">0</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">FPS:</span>
+                        <span class="info-value" id="fps-count">60</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" accept=".ifc" />
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

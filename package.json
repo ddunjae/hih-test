@@ -1,0 +1,19 @@
+{
+  "name": "bim-3d-viewer",
+  "version": "1.0.0",
+  "description": "BIM 3D Viewer - Similar to Dalux",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.149.0",
+    "web-ifc": "^0.0.53",
+    "web-ifc-three": "^0.0.125"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
