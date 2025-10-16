@@ -11,6 +11,10 @@ import { AnnotationTool } from './AnnotationTool.js';
 import { AreaVolumeTool } from './AreaVolumeTool.js';
 import { CollisionDetector } from './CollisionDetector.js';
 import { IFCObjectSelector } from './IFCObjectSelector.js';
+import { ModelManager } from './ModelManager.js';
+import { CameraPathAnimator } from './CameraPathAnimator.js';
+import { MiniMap } from './MiniMap.js';
+import { PDFReportGenerator } from './PDFReportGenerator.js';
 
 class AdvancedBIMViewer {
     constructor() {
@@ -83,6 +87,15 @@ class AdvancedBIMViewer {
         this.annotationTool = new AnnotationTool(this.scene, this.camera, this.renderer.domElement);
         this.areaVolumeTool = new AreaVolumeTool(this.scene, this.camera, this.renderer.domElement);
         this.collisionDetector = new CollisionDetector(this.scene);
+
+        // 새로운 고급 기능들
+        this.modelManager = new ModelManager(this.scene, this.ifcLoader);
+        this.cameraPathAnimator = new CameraPathAnimator(this.camera, this.controls);
+        this.miniMap = new MiniMap(this.scene, this.camera);
+        this.pdfReportGenerator = new PDFReportGenerator(this.scene, this.camera, this.renderer, this);
+
+        // Global viewer 참조 (다른 도구들이 접근할 수 있도록)
+        window.viewer = this;
 
         // Window resize
         window.addEventListener('resize', () => this.onWindowResize());
@@ -200,6 +213,12 @@ class AdvancedBIMViewer {
         document.getElementById('area-volume-btn')?.addEventListener('click', () => this.toggleAreaVolumeMode());
         document.getElementById('collision-btn')?.addEventListener('click', () => this.detectCollisions());
         document.getElementById('color-by-category-btn')?.addEventListener('click', () => this.colorByCategory());
+
+        // 새로운 고급 기능 버튼
+        document.getElementById('model-manager-btn')?.addEventListener('click', () => this.toggleModelManager());
+        document.getElementById('camera-path-btn')?.addEventListener('click', () => this.toggleCameraPath());
+        document.getElementById('minimap-btn')?.addEventListener('click', () => this.toggleMiniMap());
+        document.getElementById('pdf-report-btn')?.addEventListener('click', () => this.generatePDFReport());
 
         // Viewpoint export
         document.getElementById('export-viewpoints-btn')?.addEventListener('click', () => {
@@ -565,6 +584,23 @@ class AdvancedBIMViewer {
         this.objectExplorer.colorByCategory();
     }
 
+    // 새로운 고급 기능 메서드들
+    toggleModelManager() {
+        this.modelManager.toggle();
+    }
+
+    toggleCameraPath() {
+        this.cameraPathAnimator.toggle();
+    }
+
+    toggleMiniMap() {
+        this.miniMap.toggle();
+    }
+
+    generatePDFReport() {
+        this.pdfReportGenerator.quickReport();
+    }
+
     updateStats() {
         let triangleCount = 0;
         let objectCount = 0;
@@ -610,6 +646,7 @@ class AdvancedBIMViewer {
         this.controls.update();
         this.measurementTool.update();
         this.annotationTool.update();
+        this.miniMap.updateMinimap();
         this.updateFPS();
 
         this.renderer.render(this.scene, this.camera);

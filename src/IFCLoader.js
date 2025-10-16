@@ -6,6 +6,16 @@ export class IFCLoader {
         this.ifcModels = [];
         this.loader = null;
         this.isInitialized = false;
+        this.modelColors = [
+            0x6495ED, // Cornflower Blue
+            0x7FFF00, // Chartreuse
+            0xFF69B4, // Hot Pink
+            0xFFD700, // Gold
+            0x9370DB, // Medium Purple
+            0x20B2AA, // Light Sea Green
+            0xFF6347, // Tomato
+            0x4169E1, // Royal Blue
+        ];
     }
 
     async initLoader() {
@@ -316,6 +326,108 @@ export class IFCLoader {
 
     getModels() {
         return this.ifcModels;
+    }
+
+    // 다중 파일 로딩
+    async loadMultipleIFCFiles(files, onProgress) {
+        const totalFiles = files.length;
+        const results = [];
+
+        for (let i = 0; i < totalFiles; i++) {
+            const file = files[i];
+            console.log(`Loading file ${i + 1}/${totalFiles}: ${file.name}`);
+
+            try {
+                const model = await this.loadIFCFile(file, (percent) => {
+                    const totalProgress = ((i / totalFiles) + (percent / 100 / totalFiles)) * 100;
+                    if (onProgress) {
+                        onProgress(totalProgress, i + 1, totalFiles, file.name);
+                    }
+                });
+
+                // 각 모델에 고유 색상 적용 (선택적)
+                const colorIndex = i % this.modelColors.length;
+                model.userData.modelIndex = i;
+                model.userData.fileName = file.name;
+                model.userData.modelColor = this.modelColors[colorIndex];
+
+                results.push({
+                    success: true,
+                    model: model,
+                    fileName: file.name,
+                    index: i
+                });
+            } catch (error) {
+                console.error(`Failed to load ${file.name}:`, error);
+                results.push({
+                    success: false,
+                    error: error.message,
+                    fileName: file.name,
+                    index: i
+                });
+            }
+        }
+
+        return results;
+    }
+
+    // 특정 모델 제거
+    removeModel(modelIndex) {
+        const model = this.ifcModels[modelIndex];
+        if (model) {
+            this.scene.remove(model);
+
+            // 메모리 해제
+            model.traverse((child) => {
+                if (child.geometry) {
+                    child.geometry.dispose();
+                }
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(mat => this.disposeMaterial(mat));
+                    } else {
+                        this.disposeMaterial(child.material);
+                    }
+                }
+            });
+
+            this.ifcModels.splice(modelIndex, 1);
+            console.log(`✓ Model ${modelIndex} removed`);
+        }
+    }
+
+    // 모델별 표시/숨김
+    toggleModelVisibility(modelIndex, visible) {
+        const model = this.ifcModels[modelIndex];
+        if (model) {
+            model.visible = visible;
+        }
+    }
+
+    // 모든 모델 정보 가져오기
+    getModelsInfo() {
+        return this.ifcModels.map((model, index) => ({
+            index: index,
+            name: model.userData.fileName || `Model ${index}`,
+            visible: model.visible,
+            color: model.userData.modelColor,
+            objectCount: this.countObjects(model),
+            triangleCount: this.countTriangles(model)
+        }));
+    }
+
+    // 삼각형 수 계산
+    countTriangles(model) {
+        let count = 0;
+        model.traverse((child) => {
+            if (child.isMesh && child.geometry) {
+                const positions = child.geometry.attributes.position;
+                if (positions) {
+                    count += positions.count / 3;
+                }
+            }
+        });
+        return Math.floor(count);
     }
 
     // 메모리 사용량 추정
