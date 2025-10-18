@@ -219,7 +219,7 @@ export class PDFReportGenerator {
 
     ${includeScreenshots ? `
     <div class="section">
-        <h2>📸 프로젝트 스크린샷</h2>
+        <h2>프로젝트 스크린샷</h2>
         <img src="${screenshotData}" alt="Project Screenshot" class="screenshot">
     </div>
     ` : ''}
@@ -229,14 +229,14 @@ export class PDFReportGenerator {
     ${measurementsHTML}
 
     <div class="section">
-        <h2>📝 요약</h2>
+        <h2>요약</h2>
         <p>이 리포트는 BIM 3D Viewer를 사용하여 자동 생성되었습니다.</p>
         <p>프로젝트 분석을 통해 모델의 구조, 통계, 문제점을 파악할 수 있습니다.</p>
     </div>
 
     <div class="footer">
         <p>Generated with BIM 3D Viewer Pro</p>
-        <p>🤖 Powered by Claude Code</p>
+        <p>Powered by Claude Code</p>
     </div>
 </body>
 </html>
@@ -279,7 +279,7 @@ export class PDFReportGenerator {
 
         return `
     <div class="section">
-        <h2>📊 프로젝트 통계</h2>
+        <h2>프로젝트 통계</h2>
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="label">총 객체 수</div>
@@ -322,8 +322,8 @@ export class PDFReportGenerator {
         if (collisions.length === 0) {
             return `
     <div class="section">
-        <h2>⚠️ 충돌 감지 결과</h2>
-        <p style="color: green; font-weight: bold;">✓ 충돌이 감지되지 않았습니다.</p>
+        <h2>충돌 감지 결과</h2>
+        <p style="color: green; font-weight: bold;">충돌이 감지되지 않았습니다.</p>
     </div>
             `;
         }
@@ -342,7 +342,7 @@ export class PDFReportGenerator {
 
         return `
     <div class="section">
-        <h2>⚠️ 충돌 감지 결과</h2>
+        <h2>충돌 감지 결과</h2>
         <p style="color: red; font-weight: bold;">총 ${collisions.length}개의 충돌이 감지되었습니다.</p>
         <table>
             <thead>
@@ -365,7 +365,7 @@ export class PDFReportGenerator {
         // 측정 도구에서 측정 결과 가져오기 (가상 데이터)
         return `
     <div class="section">
-        <h2>📏 측정 결과</h2>
+        <h2>측정 결과</h2>
         <p>측정 도구를 사용하여 기록된 측정값이 표시됩니다.</p>
         <table>
             <thead>

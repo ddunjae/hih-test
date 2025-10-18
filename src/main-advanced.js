@@ -15,6 +15,9 @@ import { ModelManager } from './ModelManager.js';
 import { CameraPathAnimator } from './CameraPathAnimator.js';
 import { MiniMap } from './MiniMap.js';
 import { PDFReportGenerator } from './PDFReportGenerator.js';
+import { BCFManager } from './BCFManager.js';
+import { TimelineSimulator } from './TimelineSimulator.js';
+import { PerformanceMonitor } from './PerformanceMonitor.js';
 
 class AdvancedBIMViewer {
     constructor() {
@@ -93,6 +96,11 @@ class AdvancedBIMViewer {
         this.cameraPathAnimator = new CameraPathAnimator(this.camera, this.controls);
         this.miniMap = new MiniMap(this.scene, this.camera);
         this.pdfReportGenerator = new PDFReportGenerator(this.scene, this.camera, this.renderer, this);
+
+        // 최신 고급 기능들
+        this.bcfManager = new BCFManager(this.scene, this.camera, this);
+        this.timelineSimulator = new TimelineSimulator(this.scene, this);
+        this.performanceMonitor = new PerformanceMonitor(this.scene, this.renderer);
 
         // Global viewer 참조 (다른 도구들이 접근할 수 있도록)
         window.viewer = this;
@@ -219,6 +227,11 @@ class AdvancedBIMViewer {
         document.getElementById('camera-path-btn')?.addEventListener('click', () => this.toggleCameraPath());
         document.getElementById('minimap-btn')?.addEventListener('click', () => this.toggleMiniMap());
         document.getElementById('pdf-report-btn')?.addEventListener('click', () => this.generatePDFReport());
+
+        // 최신 고급 기능 버튼
+        document.getElementById('bcf-btn')?.addEventListener('click', () => this.toggleBCF());
+        document.getElementById('timeline-btn')?.addEventListener('click', () => this.toggleTimeline());
+        document.getElementById('performance-btn')?.addEventListener('click', () => this.togglePerformance());
 
         // Viewpoint export
         document.getElementById('export-viewpoints-btn')?.addEventListener('click', () => {
@@ -601,6 +614,19 @@ class AdvancedBIMViewer {
         this.pdfReportGenerator.quickReport();
     }
 
+    // 최신 고급 기능 메서드들
+    toggleBCF() {
+        this.bcfManager.toggle();
+    }
+
+    toggleTimeline() {
+        this.timelineSimulator.toggle();
+    }
+
+    togglePerformance() {
+        this.performanceMonitor.toggle();
+    }
+
     updateStats() {
         let triangleCount = 0;
         let objectCount = 0;
@@ -647,6 +673,7 @@ class AdvancedBIMViewer {
         this.measurementTool.update();
         this.annotationTool.update();
         this.miniMap.updateMinimap();
+        this.performanceMonitor.update();
         this.updateFPS();
 
         this.renderer.render(this.scene, this.camera);

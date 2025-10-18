@@ -45,7 +45,7 @@ export class MiniMap {
             align-items: center;
         `;
         header.innerHTML = `
-            <span>🗺️ 미니맵</span>
+            <span>미니맵</span>
             <button id="close-minimap" style="
                 background: none;
                 border: none;

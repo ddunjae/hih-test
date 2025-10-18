@@ -45,7 +45,7 @@ export class CameraPathAnimator {
 
         panel.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0; font-size: 16px; color: #0066cc;">🎬 카메라 경로</h3>
+                <h3 style="margin: 0; font-size: 16px; color: #0066cc;">카메라 경로</h3>
                 <button id="close-camera-path" style="
                     background: none;
                     border: none;
@@ -74,7 +74,7 @@ export class CameraPathAnimator {
                     cursor: pointer;
                     font-size: 13px;
                 ">
-                    ➕ 지점 추가
+                    지점 추가
                 </button>
                 <button id="clear-waypoints-btn" style="
                     padding: 10px;
@@ -85,7 +85,7 @@ export class CameraPathAnimator {
                     cursor: pointer;
                     font-size: 13px;
                 ">
-                    🗑️ 초기화
+                    초기화
                 </button>
             </div>
 
@@ -111,7 +111,7 @@ export class CameraPathAnimator {
                     font-size: 14px;
                     font-weight: bold;
                 ">
-                    ▶️ 재생
+                    재생
                 </button>
                 <button id="stop-animation-btn" style="
                     padding: 12px;
@@ -122,7 +122,7 @@ export class CameraPathAnimator {
                     cursor: pointer;
                     font-size: 14px;
                 ">
-                    ⏹️ 정지
+                    정지
                 </button>
             </div>
 
@@ -137,7 +137,7 @@ export class CameraPathAnimator {
                     cursor: pointer;
                     font-size: 12px;
                 ">
-                    💾 저장
+                    저장
                 </button>
                 <button id="import-path-btn" style="
                     flex: 1;
@@ -149,7 +149,7 @@ export class CameraPathAnimator {
                     cursor: pointer;
                     font-size: 12px;
                 ">
-                    📂 불러오기
+                    불러오기
                 </button>
             </div>
         `;

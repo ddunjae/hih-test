@@ -42,7 +42,7 @@ export class ModelManager {
 
         panel.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <h3 style="margin: 0; font-size: 16px; color: #0066cc;">📁 모델 관리</h3>
+                <h3 style="margin: 0; font-size: 16px; color: #0066cc;">모델 관리</h3>
                 <button id="close-model-manager" style="
                     background: none;
                     border: none;
@@ -177,7 +177,7 @@ export class ModelManager {
                                 cursor: pointer;
                                 font-size: 11px;
                             ">
-                                ${info.visible ? '👁️' : '🚫'}
+                                ${info.visible ? '표시' : '숨김'}
                             </button>
                             <button class="remove-model-btn" data-index="${index}" style="
                                 background: #dc3545;
@@ -188,7 +188,7 @@ export class ModelManager {
                                 cursor: pointer;
                                 font-size: 11px;
                             ">
-                                🗑️
+                                삭제
                             </button>
                         </div>
                     </div>

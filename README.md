@@ -112,16 +112,30 @@ npm run preview
 - WebGL 2.0 지원
 - 중간 이상의 GPU 권장
 
+## 구현된 고급 기능
+
+- [x] 다중 IFC 파일 동시 로딩 (Model Manager)
+- [x] 객체 필터링 및 검색 (Object Explorer)
+- [x] 레이어 관리 (Category Management)
+- [x] 주석 및 마크업 (Annotation Tool)
+- [x] 스크린샷 및 내보내기 (Screenshot Tool)
+- [x] 충돌 감지 (Collision Detector)
+- [x] 애니메이션 경로 (Camera Path Animator)
+- [x] 뷰포인트 관리 (Viewpoint Manager)
+- [x] 미니맵 네비게이션 (Mini Map)
+- [x] PDF 리포트 생성 (PDF Report Generator)
+- [x] BCF 이슈 관리 (BCF Manager)
+- [x] 4D 공정 시뮬레이션 (Timeline Simulator)
+- [x] 성능 모니터링 (Performance Monitor)
+
 ## 향후 개발 계획
 
-- [ ] 다중 IFC 파일 동시 로딩
-- [ ] 객체 필터링 및 검색
-- [ ] 레이어 관리
-- [ ] 주석 및 마크업
-- [ ] 스크린샷 및 내보내기
-- [ ] 충돌 감지
-- [ ] 애니메이션 경로
-- [ ] 협업 기능
+- [ ] VR/AR 모드 지원
+- [ ] 클라우드 저장 (Firebase)
+- [ ] 실시간 협업 (WebSocket)
+- [ ] 5D BIM (비용 정보 통합)
+- [ ] AI 기반 문제 감지
+- [ ] 모바일 최적화
 
 ## 라이선스
 
