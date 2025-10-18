@@ -30,8 +30,12 @@ export class IFCLoader {
 
             this.loader = new ThreeIFCLoader();
 
-            // WASM 파일 경로 설정
-            this.loader.ifcManager.setWasmPath('/');
+            // WASM 파일 경로 설정 (production 환경 고려)
+            // Azure Static Web Apps나 배포 환경에서는 루트 경로 사용
+            const wasmPath = import.meta.env.PROD ? '/' : '/';
+            this.loader.ifcManager.setWasmPath(wasmPath);
+
+            console.log('WASM path set to:', wasmPath);
 
             // 메모리 최적화 설정
             this.loader.ifcManager.setupThreeMeshBVH();
